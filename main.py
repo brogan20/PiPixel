@@ -31,11 +31,9 @@ while True:
 
     if time >= datetime.time(17) or time <= datetime.time(5):
         """Turn the pixels off between 5PM and 5AM"""
-        print('past')
     elif day == christmas:
         print('christmas')
     else:
         """Default action"""
-        print('norm')
         strip.strip_with_ring(partial(strip.color_wipe, pixels, Color(255, 0, 0)),
                               partial(rings.eyes, pixels, Color(255, 0, 0)))
