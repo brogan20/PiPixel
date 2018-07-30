@@ -1,5 +1,8 @@
-import calendar
-from patterns import *
+import datetime
+import strip
+import rings
+from neopixel import *
+from functools import partial
 
 # Config
 LED_COUNT = 30
@@ -14,11 +17,10 @@ LED_STRIP = ws.SK6812_STRIP_RGBW
 # Special days
 # Use datetime.date(year, month, day)
 christmas = datetime.date(2018, 12, 25)
-zee = datetime.date(2019, 2, 3)
 
 # Initialize the pixels
-strip = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
-strip.begin()
+pixels = Adafruit_NeoPixel(LED_COUNT, LED_PIN, LED_FREQ_HZ, LED_DMA, LED_INVERT, LED_BRIGHTNESS, LED_CHANNEL, LED_STRIP)
+pixels.begin()
 
 
 while True:
@@ -29,17 +31,11 @@ while True:
 
     if time >= datetime.time(17) or time <= datetime.time(5):
         """Turn the pixels off between 5PM and 5AM"""
-        turn_off(strip)
+        print('past')
     elif day == christmas:
-        """Run special pattern for Christmas"""
-        # todo - make special christmas pattern
-        school_day(time,
-                   color_wipe(strip, Color(255, 255, 0)),
-                   color_wipe(strip, Color(255, 255, 0)))
-    elif day == zee:
-        flash(strip, Color(255, 20, 147), 1000)
+        print('christmas')
     else:
-        """Run everyday an event isn't taking place"""
-        school_day(time,
-                   color_wipe(strip, Color(255, 255, 0)),
-                   color_wipe(strip, Color(255, 255, 0)))
+        """Default action"""
+        print('norm')
+        strip.strip_with_ring(partial(strip.color_wipe, pixels, Color(255, 0, 0)),
+                              partial(rings.eyes, pixels, Color(255, 0, 0)))
